@@ -1,3 +1,5 @@
+
+import numpy as np
 class Point:
     x = 0
     y = 0
@@ -33,3 +35,15 @@ class Camera:
 
         
         return xp,yp
+
+
+class Screen:
+    
+    def __init__(self, height, width):
+        self.height = height
+        self.width = width
+        self.screen = np.array([[(0.0, 0.0, 0.0, 0.0) for x in range(width)] for y in range(height)])
+
+    def update(camera, point):
+        print("updated bro")
+
