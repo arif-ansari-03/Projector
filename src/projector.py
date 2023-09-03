@@ -1,25 +1,19 @@
-
+import pygame
 import numpy as np
+import math
+
 class Point:
-    x = 0
-    y = 0
-    z = 0
     #r = 0
     colour = (0,0,0,0)
-    def __init__(self,x,y,z,r,g,b,alpha):
-        self.x = x
-        self.y = y
-        self.z = z
-        temp = list(self.colour)
-        temp[0] = r
-        temp[1] = g
-        temp[2] = b
-        temp[3] = alpha
-        self.colour = tuple(temp)
-        
-        
+    def __init__(self,x,y,z,color):
+        self.position = (x, y, z)
+        self.colour = color
+        self.x, self.y, self.z = self.position
 
-
+    def updatePos(self, newPos):
+        x, y, z = newPos
+        self.position = x, y, z
+        self.x, self.y, self.z = self.position
 
 
 class Camera:
@@ -27,11 +21,12 @@ class Camera:
     y = 0
     z = 0
     focal_length = 0
-    def _init_(self,x,y,z,f):
+    def __init__(self,x,y,z,f):
         self.x = x
         self.y = y
         self.z = z
         self.focal_length = f
+        self.position = x, y, z
 
 
     def retProjected(self,p1):
@@ -39,7 +34,12 @@ class Camera:
         yp = self.focal_length * (p1.y-self.y) / (self.focal_length + p1.z-self.z)
 
         
-        return xp,yp
+        return math.floor(xp),math.floor(yp)
+
+    def updatePos(self, x, y, z):
+        self.x, self.y, self.z = self.x + x, self.y + y, self.z + z
+
+        
 
 
 class Screen:
@@ -49,6 +49,9 @@ class Screen:
         self.width = width
         self.screen = np.array([[(0.0, 0.0, 0.0, 0.0) for x in range(width)] for y in range(height)])
 
-    def update(camera, point):
-        print("updated bro")
+    def update(self, camera, points, pygameScreen):
+        for point in points:
+            x, y = camera.retProjected(point)
+            pygame.draw.circle(pygameScreen, point.colour, (math.floor(x+self.width/2),math.floor(y+self.height/2)), 2)
+
 
