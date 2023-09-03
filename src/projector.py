@@ -3,12 +3,17 @@ class Point:
     y = 0
     z = 0
     #r = 0
-    colour = "red"
-    def __init__(self,x,y,z):
+    colour = (0,0,0,0)
+    def __init__(self,x,y,z,r,g,b,alpha):
         self.x = x
         self.y = y
         self.z = z
-        self.colour = "red"
+        temp = list(self.colour)
+        temp[0] = r
+        temp[1] = g
+        temp[2] = b
+        temp[3] = alpha
+        self.colour = tuple(temp)
         
         
 
